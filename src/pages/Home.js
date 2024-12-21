@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 // Styled Components
@@ -33,6 +34,8 @@ const Bio = styled.p`
 
 const ButtonContainer = styled.div`
   margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
 `;
 
 const Button = styled.a`
@@ -44,25 +47,44 @@ const Button = styled.a`
   font-weight: bold;
   text-decoration: none;
   margin: 0 0.5rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
   &:hover {
-    transform: scale(1.1);
+    transform: translateY(-3px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const LinkButton = styled(Link)`
+  background-color: #fff;
+  color: #4facfe;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   }
 `;
 
 const Hero = () => (
   <HeroContainer>
     <Name>Françoise Lapetite</Name>
-    <Title>Computer Science Engineer </Title>
+    <Title>Computer Science Engineer</Title>
     <Bio>
       Passionate about creating efficient and innovative solutions in programming and 
       problem-solving. With experiences in Brazil, Canada, and France, I thrive in 
-      diverse, challenging environments. Skilled in C++, Python, and Rust, 
+      diverse, challenging environments. Skilled in C++, Python, and React, 
       I'm ready to bring creativity and adaptability to every project.
     </Bio>
     <ButtonContainer>
-      <Button href="/resume.pdf" download>Download CV</Button>
-      <Button href="#contact">Contact Me</Button>
+      <Button href="/CV_2024_Francoise_Lapetite.pdf" download>Download CV</Button>
+      <LinkButton to="/contact">Contact Me</LinkButton>
     </ButtonContainer>
   </HeroContainer>
 );

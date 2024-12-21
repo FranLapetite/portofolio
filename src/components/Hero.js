@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import styled from 'styled-components';
 
 // Styled Components
@@ -50,10 +51,25 @@ const Button = styled.a`
   }
 `;
 
+const LinkButton = styled(Link)`
+  background-color: #fff;
+  color: #4facfe;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
 const Hero = () => (
   <HeroContainer>
     <Name>Françoise Lapetite</Name>
-    <Title>Computer Science Engineer </Title>
+    <Title>Computer Science Engineer</Title>
     <Bio>
       Passionate about creating efficient and innovative solutions in programming and 
       problem-solving. With experiences in Brazil, Canada, and France, I thrive in 
@@ -61,8 +77,8 @@ const Hero = () => (
       I'm ready to bring creativity and adaptability to every project.
     </Bio>
     <ButtonContainer>
-      <Button href="/resume.pdf" download>Download CV</Button>
-      <Button href="#contact">Contact Me</Button>
+      <Button href="/CV_2024_Francoise_Lapetite.pdf" download>Download CV</Button>
+      <LinkButton to="/contact">Contact Me</LinkButton> {/* Use Link for navigation */}
     </ButtonContainer>
   </HeroContainer>
 );
