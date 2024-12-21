@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NavbarContainer = styled.nav`
@@ -72,49 +72,100 @@ const NavItem = styled.li`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: inherit;
+  color: ${({ isActive }) => (isActive ? '#ffd700' : 'white')};
 `;
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navRef = useRef();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
+
   return (
-    <NavbarContainer>
+    <NavbarContainer ref={navRef}>
       {/* Logo */}
       <Link to="/" style={{ textDecoration: 'none' }}>
         <Logo>Françoise Lapetite</Logo>
       </Link>
 
       {/* Hamburger Menu */}
-      <Hamburger onClick={toggleMenu}>
+      <Hamburger onClick={toggleMenu} aria-label="Toggle navigation menu">
         <span></span>
         <span></span>
         <span></span>
       </Hamburger>
 
       {/* Navigation Links */}
-      <NavList isOpen={isOpen}>
+      <NavList isOpen={isOpen} aria-hidden={!isOpen}>
         <NavItem>
-          <StyledLink to="/" onClick={() => setIsOpen(false)}>Home</StyledLink>
+          <StyledLink
+            to="/"
+            isActive={location.pathname === '/'}
+            onClick={() => setIsOpen(false)}
+          >
+            Home
+          </StyledLink>
         </NavItem>
         <NavItem>
-          <StyledLink to="/about" onClick={() => setIsOpen(false)}>About</StyledLink>
+          <StyledLink
+            to="/about"
+            isActive={location.pathname === '/about'}
+            onClick={() => setIsOpen(false)}
+          >
+            About
+          </StyledLink>
         </NavItem>
         <NavItem>
-          <StyledLink to="/projects" onClick={() => setIsOpen(false)}>Projects</StyledLink>
+          <StyledLink
+            to="/projects"
+            isActive={location.pathname === '/projects'}
+            onClick={() => setIsOpen(false)}
+          >
+            Projects
+          </StyledLink>
         </NavItem>
         <NavItem>
-          <StyledLink to="/experience" onClick={() => setIsOpen(false)}>Experience</StyledLink>
+          <StyledLink
+            to="/experience"
+            isActive={location.pathname === '/experience'}
+            onClick={() => setIsOpen(false)}
+          >
+            Experience
+          </StyledLink>
         </NavItem>
         <NavItem>
-          <StyledLink to="/hobbies" onClick={() => setIsOpen(false)}>Hobbies</StyledLink>
+          <StyledLink
+            to="/hobbies"
+            isActive={location.pathname === '/hobbies'}
+            onClick={() => setIsOpen(false)}
+          >
+            Hobbies
+          </StyledLink>
         </NavItem>
         <NavItem>
-          <StyledLink to="/contact" onClick={() => setIsOpen(false)}>Contact</StyledLink>
+          <StyledLink
+            to="/contact"
+            isActive={location.pathname === '/contact'}
+            onClick={() => setIsOpen(false)}
+          >
+            Contact
+          </StyledLink>
         </NavItem>
       </NavList>
     </NavbarContainer>

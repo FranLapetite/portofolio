@@ -9,6 +9,7 @@ const FooterContainer = styled.footer`
   position: relative;
   bottom: 0;
   width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.3); /* Add a subtle top border */
 `;
 
 const FooterText = styled.p`
@@ -21,16 +22,23 @@ const FooterLinks = styled.div`
   justify-content: center;
   gap: 1.5rem;
   margin-top: 0.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* Stack links on smaller screens */
+    gap: 1rem;
+  }
 `;
 
 const FooterLink = styled.a`
   color: white;
   text-decoration: none;
   font-size: 1rem;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
 
   &:hover {
     color: #ffd700;
+    text-decoration: underline; /* Add underline effect */
+    transform: scale(1.05); /* Slight scaling */
   }
 `;
 
@@ -45,7 +53,7 @@ const Footer = () => {
         <FooterLink href="https://github.com/FranLapetite" target="_blank" rel="noopener noreferrer">
           GitHub
         </FooterLink>
-        <FooterLink href="/contact">Contact</FooterLink>
+        <FooterLink href="/contact">Contact</FooterLink> {/* Ensure this works with React Router */}
       </FooterLinks>
     </FooterContainer>
   );
