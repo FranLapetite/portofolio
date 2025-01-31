@@ -1,3 +1,4 @@
+/* General App Styles */
 .App {
   text-align: center;
 }
@@ -28,6 +29,84 @@
   color: #61dafb;
 }
 
+/* Mobile-Friendly Enhancements */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Ensure Content Fits on Mobile */
+.container {
+  max-width: 90%;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Navbar Responsive Adjustments */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Touch-Friendly Buttons & Inputs */
+button, input, textarea {
+  font-size: 16px; /* Prevents zooming on iPhone */
+  padding: 12px;
+}
+
+/* Responsive Typography */
+h1, h2, h3 {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+}
+
+/* Optimize Images for Mobile */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Contact Form Mobile Adjustments */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive Design with Media Queries */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .container {
+    max-width: 95%;
+  }
+}
+
+/* Keyframes for Logo Spin Animation */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -1,31 +1,37 @@
 import React from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 // Styled Components
 const AboutContainer = styled.div`
   padding: 4rem 2rem;
   text-align: center;
-  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #eef2f3, #ffffff);
   min-height: 100vh;
 `;
 
 const Title = styled.h2`
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 2rem;
-  color: #4facfe;
+  color: #3a86ff;
+  font-family: 'Poppins', sans-serif;
 `;
 
 const Bio = styled.p`
   font-size: 1.2rem;
-  line-height: 1.6;
+  line-height: 1.8;
   margin-bottom: 2rem;
-  color: #555;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  max-width: 800px;
+  margin: auto;
 `;
 
 const SectionTitle = styled.h3`
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: #333;
+  font-family: 'Poppins', sans-serif;
 `;
 
 const Skills = styled.div`
@@ -33,54 +39,48 @@ const Skills = styled.div`
   justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
+  max-width: 900px;
+  margin: auto;
 `;
 
-const SkillBadge = styled.span`
-  background: #4facfe;
+const SkillBadge = styled(motion.span)`
+  background: linear-gradient(135deg, #3a86ff, #8338ec);
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1.2rem;
   border-radius: 20px;
   font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-`;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 
-const Languages = styled.div`
-  margin-top: 2rem;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-`;
-
-const LanguageBadge = styled.span`
-  background: #00f2fe;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 const Certifications = styled.div`
-  margin-top: 2rem;
+  margin-top: 3rem;
   text-align: left;
   max-width: 800px;
-  margin: 2rem auto;
+  margin: auto;
 `;
 
 const CertificationItem = styled.div`
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const CertificationTitle = styled.h4`
   font-size: 1.5rem;
-  color: #4facfe;
+  color: #3a86ff;
   margin-bottom: 0.5rem;
 `;
 
@@ -94,59 +94,55 @@ const About = () => {
     <AboutContainer>
       <Title>About Me</Title>
       <Bio>
-        Hi, I'm Françoise Lapetite, a passionate Computer Science Engineer with a knack for creating
-        visually appealing and functional web applications. I thrive in diverse environments,
-        having worked and studied in Brazil, Canada, and France.
+        Hi, I'm <strong>Françoise Lapetite</strong>, a passionate <strong>Computer Science Engineer</strong> with expertise in 
+        cybersecurity, AI, and software development. With international experience across Brazil, Canada, and France, I specialize 
+        in building robust systems, analyzing vulnerabilities, and ensuring security compliance.
       </Bio>
+
+      {/* Skills Section */}
       <SectionTitle>Skills</SectionTitle>
       <Skills>
-        <SkillBadge>C++</SkillBadge>
-        <SkillBadge>C#</SkillBadge>
-        <SkillBadge>Python</SkillBadge>
-        <SkillBadge>Rust</SkillBadge>
-        <SkillBadge>SQL</SkillBadge>
-        <SkillBadge>JavaScript</SkillBadge>
-        <SkillBadge>React</SkillBadge>
-        <SkillBadge>CSS</SkillBadge>
-        <SkillBadge>Linux</SkillBadge>
-        <SkillBadge>Windows</SkillBadge>
-        <SkillBadge>Git</SkillBadge>
-        <SkillBadge>Office 365</SkillBadge>
-        <SkillBadge>Vim</SkillBadge>
-        <SkillBadge>SAP</SkillBadge>
-        <SkillBadge>Terraform</SkillBadge>
-        <SkillBadge>Malware Analysis</SkillBadge>
-        <SkillBadge>Forensics</SkillBadge>
-        <SkillBadge>Network</SkillBadge>
-        <SkillBadge>Pentest</SkillBadge>
+        {[
+          'C++',
+          'C#',
+          'Python',
+          'Rust',
+          'SQL',
+          'JavaScript',
+          'React',
+          'CSS',
+          'Linux',
+          'Windows',
+          'Git',
+          'Office 365',
+          'Vim',
+          'SAP',
+          'Terraform',
+          'Malware Analysis',
+          'Forensics',
+          'Network Security',
+          'Penetration Testing',
+        ].map((skill) => (
+          <SkillBadge whileHover={{ scale: 1.1 }} key={skill}>
+            {skill}
+          </SkillBadge>
+        ))}
       </Skills>
-      <SectionTitle>Languages</SectionTitle>
-      <Languages>
-        <LanguageBadge>French</LanguageBadge>
-        <LanguageBadge>English</LanguageBadge>
-        <LanguageBadge>Portuguese</LanguageBadge>
-        <LanguageBadge>Spanish</LanguageBadge>
-      </Languages>
+
+      {/* Certifications Section */}
       <SectionTitle>Certifications</SectionTitle>
       <Certifications>
-        <CertificationItem>
-          <CertificationTitle>Certified Ethical Hacker (CEH)</CertificationTitle>
-          <CertificationDetails>
-            Completed in 2023. Learned ethical hacking techniques, penetration testing, and network security.
-          </CertificationDetails>
-        </CertificationItem>
-        <CertificationItem>
-          <CertificationTitle>AWS Certified Solutions Architect</CertificationTitle>
-          <CertificationDetails>
-            Earned in 2022. Gained expertise in deploying, managing, and securing scalable cloud applications.
-          </CertificationDetails>
-        </CertificationItem>
-        <CertificationItem>
-          <CertificationTitle>Cisco Certified Network Associate (CCNA)</CertificationTitle>
-          <CertificationDetails>
-            Achieved in 2021. Mastered network fundamentals, routing, switching, and basic network security.
-          </CertificationDetails>
-        </CertificationItem>
+        {[
+          {
+            title: 'Google AI Essentials',
+            details: 'Completed in 2025. Comprehensive foundational training in Google’s AI tools, technologies, and best practices.',
+          },
+        ].map(({ title, details }, index) => (
+          <CertificationItem key={index}>
+            <CertificationTitle>{title}</CertificationTitle>
+            <CertificationDetails>{details}</CertificationDetails>
+          </CertificationItem>
+        ))}
       </Certifications>
     </AboutContainer>
   );

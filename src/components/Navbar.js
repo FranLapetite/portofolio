@@ -1,124 +1,125 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for the menu
 
-const NavbarContainer = styled.nav`
+const HeaderContainer = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: #3a86ff;
   color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;
+  z-index: 1000;
 `;
 
-const Logo = styled.h2`
+/* Logo */
+const Logo = styled(Link)`
   font-size: 1.5rem;
   font-weight: bold;
+  letter-spacing: 2px;
   color: white;
   text-decoration: none;
-  cursor: pointer;
-`;
+  transition: color 0.3s ease;
 
-const Hamburger = styled.div`
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    display: flex;
-  }
-
-  span {
-    height: 3px;
-    width: 25px;
-    background: white;
-    margin: 3px 0;
-    transition: 0.3s;
+  &:hover {
+    color: #00b2fe;
   }
 `;
 
-const NavList = styled.ul`
+/* Navigation */
+const Nav = styled.nav`
   display: flex;
-  list-style: none;
-  gap: 1.5rem;
-  margin: 0;
-  padding: 0;
+  gap: 1rem;
 
   @media (max-width: 768px) {
     flex-direction: column;
     position: absolute;
-    top: 60px;
-    right: 10px;
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    top: 0px;
+    left: 0;
+    width: 100%;
+    background: #3a86ff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 1rem 0;
+    text-align: center;
+    transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(-100%)')};
+    transition: transform 0.3s ease-in-out;
   }
 `;
 
-const NavItem = styled.li`
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
+/* Menu Links */
+const NavLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 1rem;
   transition: color 0.3s ease;
 
   &:hover {
-    color: #ffd700;
+    color: #00b2fe;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+    display: block;
+    padding: 0.8rem 0; /* Adjusted padding for better spacing */
   }
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
+/* Burger Menu Button */
+const MenuIcon = styled.div`
+  display: none;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+    font-size: 1.8rem;
+    color: white;
+  }
 `;
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+/* Mobile Menu Wrapper */
+const MobileMenu = styled.div`
+  @media (max-width: 768px) {
+    display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    background: #3a86ff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 1rem 0;
+    text-align: center;
+  }
+`;
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+const Header = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <NavbarContainer>
-      {/* Logo */}
-      <Link to="/" style={{ textDecoration: 'none' }}>
-        <Logo>Françoise Lapetite</Logo>
-      </Link>
+    <HeaderContainer>
+      <Logo to="/">Françoise Lapetite</Logo>
 
-      {/* Hamburger Menu */}
-      <Hamburger onClick={toggleMenu}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </Hamburger>
+      {/* Burger Menu Icon */}
+      <MenuIcon onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? <FaTimes /> : <FaBars />}
+      </MenuIcon>
 
-      {/* Navigation Links */}
-      <NavList isOpen={isOpen}>
-        <NavItem>
-          <StyledLink to="/" onClick={() => setIsOpen(false)}>Home</StyledLink>
-        </NavItem>
-        <NavItem>
-          <StyledLink to="/about" onClick={() => setIsOpen(false)}>About</StyledLink>
-        </NavItem>
-        <NavItem>
-          <StyledLink to="/projects" onClick={() => setIsOpen(false)}>Projects</StyledLink>
-        </NavItem>
-        <NavItem>
-          <StyledLink to="/experience" onClick={() => setIsOpen(false)}>Experience</StyledLink>
-        </NavItem>
-        <NavItem>
-          <StyledLink to="/hobbies" onClick={() => setIsOpen(false)}>Hobbies</StyledLink>
-        </NavItem>
-        <NavItem>
-          <StyledLink to="/contact" onClick={() => setIsOpen(false)}>Contact</StyledLink>
-        </NavItem>
-      </NavList>
-    </NavbarContainer>
+      {/* Mobile Menu */}
+      <MobileMenu isOpen={menuOpen}>
+        <Nav isOpen={menuOpen}>
+          <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
+          <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
+          <NavLink to="/projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
+          <NavLink to="/experience" onClick={() => setMenuOpen(false)}>Experiences</NavLink>
+          <NavLink to="/hobbies" onClick={() => setMenuOpen(false)}>Hobbies</NavLink>
+          <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
+        </Nav>
+      </MobileMenu>
+    </HeaderContainer>
   );
 };
 
-export default Navbar;
+export default Header;
