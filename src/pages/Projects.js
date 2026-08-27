@@ -1,166 +1,213 @@
 import React from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import Reveal from '../components/Reveal';
+import { Section, Container, Eyebrow, PageTitle, Lede } from '../components/primitives';
 
-// Styled Components
-const ProjectsContainer = styled.div`
-  padding: 4rem 2rem;
-  text-align: center;
-  background: linear-gradient(135deg, #eef2f3, #ffffff);
-  min-height: 100vh;
+const Header = styled.div`
+  max-width: ${({ theme }) => theme.layout.textWidth};
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
+`;
 
-  @media (max-width: 768px) {
-    padding: 3rem 1rem; /* Adjust padding for smaller screens */
+const BlockTitle = styled.h2`
+  font-size: clamp(1.3rem, 2.6vw, 1.5rem);
+  margin-bottom: ${({ theme }) => theme.spacing.md};
+`;
+
+const Block = styled.div`
+  & + & {
+    margin-top: ${({ theme }) => theme.spacing.xl};
   }
 `;
 
-const Title = styled.h2`
-  font-size: 3rem;
-  margin-bottom: 2rem;
-  color: #3a86ff;
-  font-family: 'Poppins', sans-serif;
-
-  @media (max-width: 768px) {
-    font-size: 2.2rem; /* Reduce font size on mobile */
-  }
+const List = styled.div`
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const ProjectsGrid = styled.div`
+const Entry = styled.article`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: 60px 1fr 200px;
+  gap: ${({ theme }) => theme.spacing.lg};
+  align-items: start;
+  padding: ${({ theme }) => theme.spacing.lg} 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr; /* 1 column layout on small screens */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing.xs};
+    padding: ${({ theme }) => theme.spacing.md} 0;
   }
 `;
 
-const ProjectCard = styled(motion.div)`
-  background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  transition: box-shadow 0.3s ease;
-  max-width: 100%;
-
-  &:hover {
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  }
+const Index = styled.span`
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.textMuted};
+  padding-top: 0.45rem;
 
   @media (max-width: 768px) {
-    padding: 1.2rem; /* Slightly smaller padding on mobile */
+    padding-top: 0;
   }
 `;
 
-const ProjectTitle = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #3a86ff;
-  font-family: 'Poppins', sans-serif;
-
-  @media (max-width: 768px) {
-    font-size: 1.3rem;
-  }
+const Title = styled.h3`
+  font-size: clamp(1.2rem, 2.4vw, 1.4rem);
+  margin-bottom: 0.45rem;
 `;
 
-const ProjectDescription = styled.p`
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 1rem;
+const Description = styled.p`
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+const Aside = styled.div`
+  padding-top: 0.35rem;
 
   @media (max-width: 768px) {
-    font-size: 0.9rem; /* Slightly smaller text for better fit */
+    padding-top: ${({ theme }) => theme.spacing.xs};
   }
 `;
 
 const ProjectLink = styled.a`
-  display: inline-block;
-  margin-top: 1rem;
-  color: white;
-  background: linear-gradient(135deg, #3a86ff, #00b2fe);
-  padding: 0.7rem 1.5rem;
-  border-radius: 10px;
-  text-decoration: none;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 0.88rem;
+  color: ${({ theme }) => theme.colors.accent};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.borderStrong};
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem; /* Slightly smaller buttons */
-    padding: 0.6rem 1.2rem;
+    color: ${({ theme }) => theme.colors.accentHover};
+    border-color: ${({ theme }) => theme.colors.accent};
   }
 `;
 
-const Projects = () => {
-  const projectData = [
-    {
-      title: "Cloud-Outscale",
-      description: "Deployment of a Cloud Infrastructure using Terraform and Outscale.",
-      link: "https://github.com/FranLapetite/Cloud-Outscale",
-    },
-    {
-      title: "3DExperience_SIEM",
-      description: "Security Information and Event Management (SIEM) for 3DExperience Cloud.",
-      link: "https://github.com/FranLapetite/3DExperience_SIEM",
-    },
-    {
-      title: "LMNTRIX",
-      description: "3D multiplayer maze runner game. (C#, Unity 3D, Photon Engine).",
-      link: "https://github.com/FranLapetite/LMNTRIX",
-    },
-    {
-      title: "java_api_training",
-      description: "Java API training exercises and projects.",
-      link: "https://github.com/FranLapetite/java_api_training",
-    },
-    {
-      title: "wifi-analyzer-logger",
-      description: "WiFi analyzer and logger tool.",
-      link: "https://github.com/FranLapetite/wifi-analyzer-logger",
-    },
-    {
-      title: "TODO app",
-      description: "A TODO app to help with your daily tasks made in SwiftUI",
-      link: "https://github.com/FranLapetite/TODOlist",
-    },
-    {
-      title: "Tip app",
-      description: "Your app to help you to calculate the tip at the end of your meal in SwiftUI",
-      link: "https://github.com/FranLapetite/TODOlist",
-    },
-    {
-      title: "Calculator",
-      description: "Simple calculator in SwiftUI",
-      link: "https://github.com/FranLapetite/TODOlist",
-    },
-  ];
+const Status = styled.span`
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
 
-  return (
-    <ProjectsContainer>
-      <Title>My Projects</Title>
-      <ProjectsGrid>
-        {projectData.map((project, index) => (
-          <ProjectCard
-            key={index}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ProjectTitle>{project.title}</ProjectTitle>
-            <ProjectDescription>{project.description}</ProjectDescription>
-            <ProjectLink href={project.link} target="_blank" rel="noopener noreferrer">
-              View Project
-            </ProjectLink>
-          </ProjectCard>
-        ))}
-      </ProjectsGrid>
-    </ProjectsContainer>
-  );
-};
+const CompactRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: ${({ theme }) => theme.spacing.lg};
+  align-items: baseline;
+  padding: ${({ theme }) => theme.spacing.sm} 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+`;
+
+const CompactName = styled.h3`
+  font-size: 1.08rem;
+  margin-bottom: 0.2rem;
+`;
+
+const featured = [
+  {
+    title: 'SéanceNote',
+    description:
+      "An iOS application for writing session and meeting notes, processed entirely on-device for privacy. Templates adapt in length and structure to the user's profession, covering medical, legal, consulting, and research use cases.",
+    link: 'https://apps.apple.com/fr/app/s%C3%A9ancenote/id6774525144?l=en-GB',
+    linkLabel: 'App Store',
+  },
+  {
+    title: 'Fox',
+    description:
+      'An iOS home-screen widget pairing a to-do list with an illustrated companion whose state reflects task completion, designed to encourage consistent follow-through.',
+  },
+  {
+    title: 'Happello',
+    description:
+      'An iOS reminders application for recurring but easily forgotten personal administration such as annual checkups, blood tests, and document renewals, with a dedicated module for new parents covering vaccinations, appointments, and paperwork.',
+  },
+];
+
+const engineering = [
+  {
+    title: 'Cloud-Outscale',
+    description: 'Cloud infrastructure deployment using Terraform and Outscale.',
+    link: 'https://github.com/FranLapetite/Cloud-Outscale',
+  },
+  {
+    title: '3DExperience SIEM',
+    description: 'Security Information and Event Management for 3DExperience Cloud.',
+    link: 'https://github.com/FranLapetite/3DExperience_SIEM',
+  },
+  {
+    title: 'LMNTRIX',
+    description: '3D multiplayer maze runner built with C#, Unity, and Photon Engine.',
+    link: 'https://github.com/FranLapetite/LMNTRIX',
+  },
+  {
+    title: 'WiFi Analyzer & Logger',
+    description: 'Network analysis and logging tool for wireless environments.',
+    link: 'https://github.com/FranLapetite/wifi-analyzer-logger',
+  },
+];
+
+const Projects = () => (
+  <Section>
+    <Container>
+      <Header>
+        <Eyebrow>Portfolio</Eyebrow>
+        <PageTitle>Projects</PageTitle>
+        <Lede>
+          Independent iOS products and engineering work in cloud infrastructure and security.
+        </Lede>
+      </Header>
+
+      <Block>
+        <BlockTitle>Selected work</BlockTitle>
+        <List>
+          {featured.map((project, index) => (
+            <Reveal key={project.title} delay={index * 70}>
+              <Entry>
+                <Index>{String(index + 1).padStart(2, '0')}</Index>
+                <div>
+                  <Title>{project.title}</Title>
+                  <Description>{project.description}</Description>
+                </div>
+                <Aside>
+                  {project.link ? (
+                    <ProjectLink href={project.link} target="_blank" rel="noopener noreferrer">
+                      {project.linkLabel || 'View project'}
+                    </ProjectLink>
+                  ) : (
+                    <Status>In development</Status>
+                  )}
+                </Aside>
+              </Entry>
+            </Reveal>
+          ))}
+        </List>
+      </Block>
+
+      <Block>
+        <BlockTitle>Engineering projects</BlockTitle>
+        <List>
+          {engineering.map((project, index) => (
+            <Reveal key={project.title} delay={index * 50}>
+              <CompactRow>
+                <div>
+                  <CompactName>{project.title}</CompactName>
+                  <Description>{project.description}</Description>
+                </div>
+                <ProjectLink href={project.link} target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </ProjectLink>
+              </CompactRow>
+            </Reveal>
+          ))}
+        </List>
+      </Block>
+    </Container>
+  </Section>
+);
 
 export default Projects;

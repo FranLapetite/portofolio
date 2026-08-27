@@ -1,189 +1,183 @@
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { Section, Container, Eyebrow, PageTitle, Lede } from '../components/primitives';
 
-// Styled Components
-const FormContainer = styled.div`
-  position: relative;
-  padding: 4rem 2rem;
-  text-align: center;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+const Layout = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${({ theme }) => theme.spacing.xl};
+  align-items: start;
 
   @media (max-width: 768px) {
-    padding: 3rem 1rem;
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing.lg};
   }
 `;
 
-const Background = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: linear-gradient(135deg, #3a86ff, #00b2fe);
+const Intro = styled.div``;
 
-  &:before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 300px;
-    bottom: 0;
-    left: 0;
-    background: white;
-    clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
+const Direct = styled.div`
+  margin-top: ${({ theme }) => theme.spacing.lg};
+  padding-top: ${({ theme }) => theme.spacing.md};
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+
+  a {
+    display: inline-block;
+    margin-top: 0.3rem;
+    color: ${({ theme }) => theme.colors.textPrimary};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderStrong};
+    transition: color 0.2s ease, border-color 0.2s ease;
   }
-`;
 
-const Title = styled.h1`
-  font-size: 3rem;
-  color: #ffffff;
-  margin-bottom: 1.5rem;
-  font-family: 'Poppins', sans-serif;
-
-  @media (max-width: 768px) {
-    font-size: 2.2rem;
-  }
-`;
-
-const Description = styled.p`
-  font-size: 1.2rem;
-  color: #f9f9f9;
-  margin-bottom: 2rem;
-  font-family: 'Roboto', sans-serif;
-  text-align: center;
-  max-width: 600px;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-    max-width: 90%;
+  a:hover {
+    color: ${({ theme }) => theme.colors.accent};
+    border-color: ${({ theme }) => theme.colors.accent};
   }
 `;
 
 const Form = styled.form`
-  max-width: 400px;
-  width: 100%;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: ${({ theme }) => theme.spacing.md};
+`;
 
-  @media (max-width: 480px) {
-    padding: 1.5rem;
-    max-width: 90%;
+const Field = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+`;
+
+const FieldLabel = styled.span`
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+const inputStyles = `
+  width: 100%;
+  padding: 0.65rem 0;
+  font-size: 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--field-border);
+  color: var(--field-text);
+  transition: border-color 0.2s ease;
+
+  &::placeholder {
+    color: var(--field-placeholder);
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom-color: var(--field-focus);
   }
 `;
 
 const Input = styled.input`
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-    border-color: #3a86ff;
-    box-shadow: 0px 0px 5px rgba(58, 134, 255, 0.5);
-  }
+  --field-border: ${({ theme }) => theme.colors.border};
+  --field-text: ${({ theme }) => theme.colors.textPrimary};
+  --field-placeholder: ${({ theme }) => theme.colors.textMuted};
+  --field-focus: ${({ theme }) => theme.colors.textPrimary};
+  ${inputStyles}
+  font-family: inherit;
 `;
 
 const TextArea = styled.textarea`
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  resize: none;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-    border-color: #3a86ff;
-    box-shadow: 0px 0px 5px rgba(58, 134, 255, 0.5);
-  }
+  --field-border: ${({ theme }) => theme.colors.border};
+  --field-text: ${({ theme }) => theme.colors.textPrimary};
+  --field-placeholder: ${({ theme }) => theme.colors.textMuted};
+  --field-focus: ${({ theme }) => theme.colors.textPrimary};
+  ${inputStyles}
+  font-family: inherit;
+  resize: vertical;
+  min-height: 120px;
 `;
 
-const CheckboxContainer = styled.div`
+const Consent = styled.label`
   display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  font-family: 'Roboto', sans-serif;
-  color: #333;
-  gap: 10px;
-  text-align: left;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  cursor: pointer;
 
-  @media (max-width: 480px) {
-    flex-direction: column;
-    align-items: flex-start;
+  a {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderStrong};
+  }
+
+  a:hover {
+    color: ${({ theme }) => theme.colors.accent};
   }
 `;
 
 const Checkbox = styled.input`
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  accent-color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-const Button = styled.button`
-  background: linear-gradient(135deg, #3a86ff, #00b2fe);
-  color: white;
-  padding: 1rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
+const SubmitButton = styled.button`
+  align-self: flex-start;
+  background: ${({ theme }) => theme.colors.accent};
+  color: ${({ theme }) => theme.colors.bgBase};
+  padding: 0.85rem 1.9rem;
+  border: 1px solid ${({ theme }) => theme.colors.accent};
+  border-radius: ${({ theme }) => theme.radii.pill};
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease,
+    box-shadow 0.2s ease, opacity 0.2s ease;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0px 4px 15px rgba(58, 134, 255, 0.3);
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.accentHover};
+    border-color: ${({ theme }) => theme.colors.accentHover};
+    transform: translateY(-2px);
+    box-shadow: ${({ theme }) => theme.shadows.accent};
   }
 
-  @media (max-width: 480px) {
-    font-size: 0.9rem;
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+    box-shadow: none;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover:not(:disabled),
+    &:active:not(:disabled) {
+      transform: none;
+    }
   }
 `;
 
-const StatusMessage = styled.p`
-  font-size: 1rem;
-  color: ${({ success }) => (success ? '#50fa7b' : '#ff5555')};
-  margin-top: 1rem;
-  font-family: 'Roboto', sans-serif;
-
-  @media (max-width: 480px) {
-    font-size: 0.9rem;
-  }
+const StatusMessage = styled(motion.p)`
+  font-size: 0.9rem;
+  color: ${({ theme, $success }) => ($success ? theme.colors.success : theme.colors.error)};
 `;
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
-
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [status, setStatus] = useState('');
+  const [sending, setSending] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleCheckboxChange = (e) => {
-    setPrivacyChecked(e.target.checked);
   };
 
   const handleSubmit = (e) => {
@@ -194,54 +188,115 @@ const Contact = () => {
       return;
     }
 
-    setStatus('Sending...');
+    setSending(true);
+    setStatus('Sending…');
 
     emailjs
       .send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
         {
           from_name: formData.name,
-          to_name: 'Françoise',
+          from_email: formData.email,
           message: formData.message,
         },
-        'YOUR_PUBLIC_KEY'
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
       )
       .then(
         () => {
-          setStatus('Message sent successfully!');
+          setStatus('Message sent. I will get back to you shortly.');
           setFormData({ name: '', email: '', message: '' });
           setPrivacyChecked(false);
+          setSending(false);
         },
         () => {
           setStatus('Failed to send message. Please try again.');
+          setSending(false);
         }
       );
   };
 
   return (
-    <FormContainer>
-      <Background />
-      <Title>Contact Me</Title>
-      <Description>
-        Have a question, an idea, or want to collaborate? Feel free to send me a message!
-      </Description>
-      <Form onSubmit={handleSubmit}>
-        <Input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
-        <Input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
-        <TextArea name="message" placeholder="Your Message" rows="5" value={formData.message} onChange={handleChange} required />
-        
-        <CheckboxContainer>
-          <Checkbox type="checkbox" checked={privacyChecked} onChange={handleCheckboxChange} required />
-          <label>
-            I agree to the <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
-          </label>
-        </CheckboxContainer>
+    <Section>
+      <Container>
+        <Layout>
+          <Intro>
+            <Eyebrow>Get in touch</Eyebrow>
+            <PageTitle>Contact</PageTitle>
+            <Lede>
+              Open to engineering roles, collaborations, and conversations about product or
+              security work.
+            </Lede>
+            <Direct>
+              Prefer email?
+              <br />
+              <a href="mailto:fran.lapetite@gmail.com">fran.lapetite@gmail.com</a>
+            </Direct>
+          </Intro>
 
-        <Button type="submit" disabled={!privacyChecked}>Send</Button>
-      </Form>
-      {status && <StatusMessage success={status.includes('successfully')}>{status}</StatusMessage>}
-    </FormContainer>
+          <Form onSubmit={handleSubmit}>
+            <Field>
+              <FieldLabel>Name</FieldLabel>
+              <Input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel>Email</FieldLabel>
+              <Input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel>Message</FieldLabel>
+              <TextArea
+                name="message"
+                rows="5"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              />
+            </Field>
+
+            <Consent>
+              <Checkbox
+                type="checkbox"
+                checked={privacyChecked}
+                onChange={(e) => setPrivacyChecked(e.target.checked)}
+                required
+              />
+              <span>
+                I agree to the <Link to="/privacy-policy">Privacy Policy</Link>.
+              </span>
+            </Consent>
+
+            <SubmitButton type="submit" disabled={!privacyChecked || sending}>
+              {sending ? 'Sending…' : 'Send message'}
+            </SubmitButton>
+
+            {status && (
+              <StatusMessage
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                $success={status.startsWith('Message sent')}
+              >
+                {status}
+              </StatusMessage>
+            )}
+          </Form>
+        </Layout>
+      </Container>
+    </Section>
   );
 };
 

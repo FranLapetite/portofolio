@@ -1,125 +1,130 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons for the menu
+import { NavLink } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: ${({ theme }) => theme.colors.bgBaseTranslucent};
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const Inner = styled.div`
+  max-width: ${({ theme }) => theme.layout.maxWidth};
+  margin: 0 auto;
+  padding: 0 ${({ theme }) => theme.spacing.lg};
+  min-height: ${({ theme }) => theme.layout.headerHeight};
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background: #3a86ff;
-  color: white;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
-  z-index: 1000;
-`;
-
-/* Logo */
-const Logo = styled(Link)`
-  font-size: 1.5rem;
-  font-weight: bold;
-  letter-spacing: 2px;
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #00b2fe;
-  }
-`;
-
-/* Navigation */
-const Nav = styled.nav`
-  display: flex;
-  gap: 1rem;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.md};
 
   @media (max-width: 768px) {
     flex-direction: column;
-    position: absolute;
-    top: 0px;
-    left: 0;
-    width: 100%;
-    background: #3a86ff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 1rem 0;
-    text-align: center;
-    transform: ${({ isOpen }) => (isOpen ? 'translateY(0)' : 'translateY(-100%)')};
-    transition: transform 0.3s ease-in-out;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing.xs};
+    padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+    min-height: 0;
   }
 `;
 
-/* Menu Links */
-const NavLink = styled(Link)`
-  color: white;
-  text-decoration: none;
-  font-size: 1.2rem;
-  padding: 1rem;
-  transition: color 0.3s ease;
+const Logo = styled(NavLink)`
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+`;
+
+const Nav = styled.nav`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+
+  @media (max-width: 768px) {
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.2rem;
+  }
+
+  /* Below ~480px the six links can't share one row; cap the width so they
+     break into two balanced rows of three instead of a lone trailing link. */
+  @media (max-width: 480px) {
+    max-width: 14rem;
+  }
+`;
+
+const StyledLink = styled(NavLink)`
+  position: relative;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  padding: 0.35rem 0;
+  transition: color 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: ${({ theme }) => theme.colors.textPrimary};
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
 
   &:hover {
-    color: #00b2fe;
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  &:hover::after,
+  &.active::after {
+    transform: scaleX(1);
+  }
+
+  &.active {
+    color: ${({ theme }) => theme.colors.textPrimary};
   }
 
   @media (max-width: 768px) {
-    font-size: 1.3rem;
-    display: block;
-    padding: 0.8rem 0; /* Adjusted padding for better spacing */
+    font-size: 0.82rem;
   }
 `;
 
-/* Burger Menu Button */
-const MenuIcon = styled.div`
-  display: none;
-  cursor: pointer;
+const links = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/about', label: 'About' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/experience', label: 'Experience' },
+  { to: '/hobbies', label: 'Interests' },
+  { to: '/contact', label: 'Contact' },
+];
 
-  @media (max-width: 768px) {
-    display: block;
-    font-size: 1.8rem;
-    color: white;
-  }
-`;
+const Navbar = () => (
+  <HeaderContainer>
+    <Inner>
+      <Logo to="/" end aria-label="Françoise Lapetite, home">
+        Françoise Lapetite
+      </Logo>
+      <Nav>
+        {links.map(({ to, label, end }) => (
+          <StyledLink key={to} to={to} end={end}>
+            {label}
+          </StyledLink>
+        ))}
+      </Nav>
+    </Inner>
+  </HeaderContainer>
+);
 
-/* Mobile Menu Wrapper */
-const MobileMenu = styled.div`
-  @media (max-width: 768px) {
-    display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
-    position: absolute;
-    top: 0px;
-    left: 0;
-    width: 100%;
-    background: #3a86ff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 1rem 0;
-    text-align: center;
-  }
-`;
-
-const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  return (
-    <HeaderContainer>
-      <Logo to="/">Françoise Lapetite</Logo>
-
-      {/* Burger Menu Icon */}
-      <MenuIcon onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? <FaTimes /> : <FaBars />}
-      </MenuIcon>
-
-      {/* Mobile Menu */}
-      <MobileMenu isOpen={menuOpen}>
-        <Nav isOpen={menuOpen}>
-          <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
-          <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
-          <NavLink to="/projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
-          <NavLink to="/experience" onClick={() => setMenuOpen(false)}>Experiences</NavLink>
-          <NavLink to="/hobbies" onClick={() => setMenuOpen(false)}>Hobbies</NavLink>
-          <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
-        </Nav>
-      </MobileMenu>
-    </HeaderContainer>
-  );
-};
-
-export default Header;
+export default Navbar;

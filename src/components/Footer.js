@@ -1,46 +1,75 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const FooterContainer = styled.footer`
-  padding: 2rem;
-  text-align: center;
-  background: #3a86ff;
-  color: white;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
   margin-top: auto;
-  font-size: 1rem;
 `;
 
-const FooterLinks = styled.div`
-  margin: 1rem 0;
+const Inner = styled.div`
+  max-width: ${({ theme }) => theme.layout.maxWidth};
+  margin: 0 auto;
+  padding: ${({ theme }) => theme.spacing.lg};
   display: flex;
-  justify-content: center;
-  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.md};
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.spacing.sm};
+    padding: ${({ theme }) => theme.spacing.lg} ${({ theme }) => theme.spacing.md};
+  }
+`;
+
+const Copy = styled.p`
+  font-size: 0.82rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+const Links = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    gap: ${({ theme }) => theme.spacing.sm};
+  }
 `;
 
 const FooterLink = styled.a`
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  transition: color 0.2s ease;
 
   &:hover {
-    color: #00b2fe;
+    color: ${({ theme }) => theme.colors.textPrimary};
   }
 `;
 
 const Footer = () => (
   <FooterContainer>
-    <p>&copy; 2024 Françoise Lapetite. All rights reserved.</p>
-    <p> This website does not collect personal data.</p>
-    <FooterLinks>
-      <FooterLink href="https://linkedin.com/in/fran-lapetite" target="_blank">
-        LinkedIn
-      </FooterLink>
-      <FooterLink href="https://github.com/franlapetite" target="_blank">
-        GitHub
-      </FooterLink>
-      <FooterLink href="/contact">Contact</FooterLink>
-    </FooterLinks>
+    <Inner>
+      <Copy>© {new Date().getFullYear()} Françoise Lapetite</Copy>
+      <Links>
+        <FooterLink href="https://www.linkedin.com/in/fran-lapetite" target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </FooterLink>
+        <FooterLink href="https://github.com/FranLapetite" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </FooterLink>
+        <FooterLink as={Link} to="/privacy-policy">
+          Privacy
+        </FooterLink>
+        <FooterLink as={Link} to="/fox" aria-label="Fox Den">
+          Fox Den
+        </FooterLink>
+      </Links>
+    </Inner>
   </FooterContainer>
 );
 

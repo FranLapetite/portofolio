@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <meta name="theme-color" content="#4facfe" />
-    <meta name="description" content="Françoise Lapetite's portfolio website showcasing skills, projects, and achievements." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FAF8F5" />
+    <meta name="description" content="Françoise Lapetite, product manager and engineer in Paris. Founder of Fran's Guide, shipping iOS products end to end." />
     <title>Françoise Lapetite Portfolio</title>
 
     <!-- Base URL -->
@@ -17,18 +17,42 @@
     <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json" />
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Apple iPhone Web App Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Françoise Portfolio" />
 
     <!-- Additional Meta Tags for SEO and Social Sharing -->
     <meta property="og:title" content="Françoise Lapetite Portfolio" />
-    <meta property="og:description" content="A professional portfolio of Françoise Lapetite, Computer Science Engineer." />
+    <meta property="og:description" content="Product manager and engineer in Paris. Founder of Fran's Guide, shipping iOS products end to end." />
     <meta property="og:image" content="%PUBLIC_URL%/FL_logo.png" />
     <meta property="og:url" content="https://francoiselapetite.com" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%PUBLIC_URL%/FL_logo.png" />
+
+    <!-- Structured data for SEO / AI discoverability -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Françoise Lapetite",
+        "alternateName": "Fran Lapetite",
+        "url": "https://francoiselapetite.com",
+        "jobTitle": "Product Manager & Engineer",
+        "sameAs": [
+          "https://github.com/FranLapetite",
+          "https://www.linkedin.com/in/fran-lapetite"
+        ]
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

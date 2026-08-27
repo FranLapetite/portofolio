@@ -1,143 +1,103 @@
 import React from 'react';
 import styled from 'styled-components';
+import Reveal from '../components/Reveal';
+import { Section, Container, Eyebrow, PageTitle, Lede } from '../components/primitives';
 
-// Styled Components
-const PageContainer = styled.div`
-  padding: 4rem 2rem;
-  text-align: center;
-  background: linear-gradient(135deg, #eef2f3, #ffffff);
-  min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
-
-  @media (max-width: 768px) {
-    padding: 3rem 1rem;
-  }
+const Header = styled.div`
+  max-width: ${({ theme }) => theme.layout.textWidth};
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
 `;
 
-const Title = styled.h1`
-  font-size: 3rem;
-  color: #3a86ff;
-  margin-bottom: 2rem;
-
-  @media (max-width: 768px) {
-    font-size: 2.2rem;
-  }
-`;
-
-const HobbiesGrid = styled.div`
+/** Two columns so descriptions keep a readable measure instead of running edge to edge. */
+const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 0;
-  max-width: 1000px;
-  margin: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 ${({ theme }) => theme.spacing.xl};
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 `;
 
-const HobbyCard = styled.div`
-  background: #ffffff;
-  border-radius: 15px;
-  padding: 1.5rem;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  @media (max-width: 480px) {
-    padding: 1rem;
-  }
+const Entry = styled.div`
+  padding: ${({ theme }) => theme.spacing.md} 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const HobbyIcon = styled.div`
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: rotate(10deg) scale(1.1);
-  }
+const Name = styled.h2`
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
 `;
 
-const HobbyTitle = styled.h2`
-  font-size: 1.6rem;
-  color: #333;
-  margin-bottom: 0.5rem;
-
-  @media (max-width: 768px) {
-    font-size: 1.4rem;
-  }
+const Description = styled.p`
+  font-size: 0.96rem;
+  line-height: 1.75;
+  color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
-const HobbyDescription = styled.p`
-  font-size: 1rem;
-  color: #666;
-  line-height: 1.6;
+const interests = [
+  {
+    title: 'Photography',
+    description:
+      'Chasing light and fleeting moments. It taught me framing, patience, and that the shot worth keeping is usually the one you almost walked past.',
+  },
+  {
+    title: 'Painting',
+    description:
+      'A long-standing practice, and where most of my sense of composition and colour comes from.',
+  },
+  {
+    title: 'Travel',
+    description:
+      'Exploring cultures, landscapes, and cuisines. Four languages later, it is still the fastest way I learn anything.',
+  },
+  {
+    title: 'Cooking',
+    description:
+      'Experimenting with international cuisines and getting people around a table. The closest thing I have to a reset button.',
+  },
+  {
+    title: 'Football',
+    description:
+      'Staying active, and keeping a taste for team dynamics outside of work.',
+  },
+  {
+    title: 'Music',
+    description:
+      'Listening widely across genres, a constant companion while building things.',
+  },
+  {
+    title: 'Volunteering',
+    description:
+      'Supporting Restos du Cœur, contributing where it actually counts.',
+  },
+];
 
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
-`;
+const Hobbies = () => (
+  <Section>
+    <Container>
+      <Header>
+        <Eyebrow>Outside work</Eyebrow>
+        <PageTitle>Interests</PageTitle>
+        <Lede>
+          The things that occupy me away from a keyboard, several of which ended up shaping
+          how I look at the things I build.
+        </Lede>
+      </Header>
 
-const Hobbies = () => {
-  const hobbiesData = [
-    {
-      icon: "🎨",
-      title: "Painting",
-      description: "Expressing creativity through painting and experimenting with new techniques.",
-    },
-    {
-      icon: "⚽",
-      title: "Football",
-      description: "Staying active and building teamwork through my love for football.",
-    },
-    {
-      icon: "🎵",
-      title: "Music",
-      description: "Listening and exploring diverse genres of music to relax and create.",
-    },
-    {
-      icon: "✈️",
-      title: "Traveling",
-      description: "Exploring different cultures, landscapes, and cuisines inspires me.",
-    },
-    {
-      icon: "📷",
-      title: "Photography",
-      description: "Capturing the beauty of fleeting moments, finding inspiration in nature, and turning memories into timeless visuals.",
-    },
-    {
-      icon: "🍳",
-      title: "Cooking",
-      description: "Exploring international cuisines, experimenting with flavors, and bringing people together over delicious meals.",
-    },
-    {
-      icon: "🤝",
-      title: "Volunteering",
-      description: "Contributing to the community by supporting Restos du Cœur, helping those in need, and making a difference.",
-    },
-  ];
-
-  return (
-    <PageContainer>
-      <Title>Hobbies & Interests</Title>
-      <HobbiesGrid>
-        {hobbiesData.map((hobby, index) => (
-          <HobbyCard key={index}>
-            <HobbyIcon>{hobby.icon}</HobbyIcon>
-            <HobbyTitle>{hobby.title}</HobbyTitle>
-            <HobbyDescription>{hobby.description}</HobbyDescription>
-          </HobbyCard>
+      <Grid>
+        {interests.map((interest, index) => (
+          <Reveal key={interest.title} delay={index * 40}>
+            <Entry>
+              <Name>{interest.title}</Name>
+              <Description>{interest.description}</Description>
+            </Entry>
+          </Reveal>
         ))}
-      </HobbiesGrid>
-    </PageContainer>
-  );
-};
+      </Grid>
+    </Container>
+  </Section>
+);
 
 export default Hobbies;

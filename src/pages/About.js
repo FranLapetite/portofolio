@@ -1,151 +1,275 @@
 import React from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import Reveal from '../components/Reveal';
+import { Section, Container, Eyebrow, PageTitle } from '../components/primitives';
 
-// Styled Components
-const AboutContainer = styled.div`
-  padding: 4rem 2rem;
-  text-align: center;
-  background: linear-gradient(135deg, #eef2f3, #ffffff);
-  min-height: 100vh;
-`;
+/**
+ * Every section on this page shares one spine: a fixed left rail for the
+ * heading, a fixed-width content column on the right. Two vertical alignment
+ * lines for the whole page, so nothing reads as ragged.
+ */
+const Spine = styled.div`
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: ${({ theme }) => theme.spacing.xl};
+  align-items: start;
 
-const Title = styled.h2`
-  font-size: 3rem;
-  margin-bottom: 2rem;
-  color: #3a86ff;
-  font-family: 'Poppins', sans-serif;
-`;
-
-const Bio = styled.p`
-  font-size: 1.2rem;
-  line-height: 1.8;
-  margin-bottom: 2rem;
-  color: #333;
-  font-family: 'Roboto', sans-serif;
-  max-width: 800px;
-  margin: auto;
-`;
-
-const SectionTitle = styled.h3`
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #333;
-  font-family: 'Poppins', sans-serif;
-`;
-
-const Skills = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  max-width: 900px;
-  margin: auto;
-`;
-
-const SkillBadge = styled(motion.span)`
-  background: linear-gradient(135deg, #3a86ff, #8338ec);
-  color: white;
-  padding: 0.7rem 1.2rem;
-  border-radius: 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing.sm};
   }
 `;
 
-const Certifications = styled.div`
-  margin-top: 3rem;
-  text-align: left;
-  max-width: 800px;
-  margin: auto;
+const Intro = styled(Spine)`
+  margin-bottom: ${({ theme }) => theme.spacing.xxl};
 `;
 
-const CertificationItem = styled.div`
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: #f9f9f9;
-  border-radius: 15px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+const Statement = styled.p`
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  padding-top: ${({ theme }) => theme.spacing.sm};
+  border-top: 1px solid ${({ theme }) => theme.colors.borderStrong};
+`;
 
-  &:hover {
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+const Bio = styled.div`
+  p {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    color: ${({ theme }) => theme.colors.textSecondary};
+    margin-bottom: ${({ theme }) => theme.spacing.sm};
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 `;
 
-const CertificationTitle = styled.h4`
-  font-size: 1.5rem;
-  color: #3a86ff;
-  margin-bottom: 0.5rem;
+const Block = styled(Spine)`
+  padding-top: ${({ theme }) => theme.spacing.lg};
+  padding-bottom: ${({ theme }) => theme.spacing.lg};
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const CertificationDetails = styled.p`
-  font-size: 1rem;
-  color: #555;
+const BlockTitle = styled.h2`
+  font-size: clamp(1.3rem, 2.6vw, 1.5rem);
 `;
 
-const About = () => {
-  return (
-    <AboutContainer>
-      <Title>About Me</Title>
-      <Bio>
-        Hi, I'm <strong>Françoise Lapetite</strong>, a passionate <strong>Computer Science Engineer</strong> with expertise in 
-        cybersecurity, AI, and software development. With international experience across Brazil, Canada, and France, I specialize 
-        in building robust systems, analyzing vulnerabilities, and ensuring security compliance.
-      </Bio>
+/** Stacked rows: uneven lengths never sit side by side, so no ragged edge. */
+const DefRow = styled.div`
+  padding-bottom: ${({ theme }) => theme.spacing.sm};
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
-      {/* Skills Section */}
-      <SectionTitle>Skills</SectionTitle>
-      <Skills>
-        {[
-          'C++',
-          'C#',
-          'Python',
-          'Rust',
-          'SQL',
-          'JavaScript',
-          'React',
-          'CSS',
-          'Linux',
-          'Windows',
-          'Git',
-          'Office 365',
-          'Vim',
-          'SAP',
-          'Terraform',
-          'Malware Analysis',
-          'Forensics',
-          'Network Security',
-          'Penetration Testing',
-        ].map((skill) => (
-          <SkillBadge whileHover={{ scale: 1.1 }} key={skill}>
-            {skill}
-          </SkillBadge>
-        ))}
-      </Skills>
+  &:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+`;
 
-      {/* Certifications Section */}
-      <SectionTitle>Certifications</SectionTitle>
-      <Certifications>
-        {[
-          {
-            title: 'Google AI Essentials',
-            details: 'Completed in 2025. Comprehensive foundational training in Google’s AI tools, technologies, and best practices.',
-          },
-        ].map(({ title, details }, index) => (
-          <CertificationItem key={index}>
-            <CertificationTitle>{title}</CertificationTitle>
-            <CertificationDetails>{details}</CertificationDetails>
-          </CertificationItem>
-        ))}
-      </Certifications>
-    </AboutContainer>
-  );
-};
+const DefLabel = styled.p`
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin-bottom: 0.4rem;
+`;
+
+const DefValue = styled.p`
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+/** Ten items, two columns, five clean rows. */
+const StrengthGrid = styled.ul`
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 ${({ theme }) => theme.spacing.lg};
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Strength = styled.li`
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  padding: 0.55rem 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const LanguageGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: ${({ theme }) => theme.spacing.sm};
+
+  @media (max-width: 560px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: ${({ theme }) => theme.spacing.md};
+  }
+`;
+
+const Language = styled.div`
+  strong {
+    display: block;
+    font-family: ${({ theme }) => theme.fonts.display};
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.textPrimary};
+    margin-bottom: 0.15rem;
+  }
+
+  span {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.textMuted};
+  }
+`;
+
+const SchoolName = styled.h3`
+  font-size: 1.15rem;
+  margin-bottom: 0.3rem;
+`;
+
+const skillGroups = [
+  {
+    label: 'Product & analytics',
+    value: 'Customer discovery and interviews, feature prioritization, roadmap and release planning, KPI analysis, App Store Connect & Analytics, Figma',
+  },
+  {
+    label: 'Engineering',
+    value: 'Python, React, SwiftUI, SQL, Bash, C, C++, C#, Git, Terraform, Vim',
+  },
+  {
+    label: 'Business systems',
+    value: 'Salesforce, SAP, CRM and SRM platforms',
+  },
+  {
+    label: 'Security background',
+    value: 'Governance frameworks, policy design, risk and privacy-first architecture',
+  },
+];
+
+const strengths = [
+  'Customer empathy and discovery',
+  'Product innovation',
+  'Stakeholder alignment',
+  'Architecture',
+  'Cross-functional coordination',
+  'Problem-solving',
+  'Technical communication',
+  'Team leadership',
+  'Building collaborative culture',
+  'Fast learner',
+];
+
+const languages = [
+  { name: 'French', level: 'Native' },
+  { name: 'Portuguese', level: 'Native' },
+  { name: 'English', level: 'Fluent' },
+  { name: 'Spanish', level: 'Fluent' },
+];
+
+const About = () => (
+  <Section>
+    <Container>
+      <Intro>
+        <div>
+          <Eyebrow>Profile</Eyebrow>
+          <PageTitle>About</PageTitle>
+          <Statement>
+            A product-focused engineer who would rather solve a customer's problem than
+            defend a spec.
+          </Statement>
+        </div>
+
+        <Bio>
+          <p>
+            I build products end to end. That means sitting with the people who will use
+            something before writing a line of code, deciding what not to build, designing
+            the architecture, shipping it, and then reading the analytics honestly enough to
+            change course. In 2025 I founded Fran's Guide and took an iOS app from an idea
+            to the App Store on my own, covering product discovery, design, monetization,
+            and analytics.
+          </p>
+          <p>
+            Before that I spent four years inside large organizations. At Accenture I worked
+            with Fortune 500 clients on digital transformation, translating customer pain
+            points into technical solutions and acting as the bridge between engineering
+            teams and business stakeholders. At La Banque Postale I moved into cybersecurity
+            governance, where the real work turned out to be adoption: understanding why
+            people weren't using the tools, and rewriting the approach until they did.
+          </p>
+          <p>
+            My degree specialization was cybersecurity, and that training still shapes how I
+            think. SéanceNote is local-first precisely because I know what happens to data
+            that leaves a device. But it's the product side I want to keep building on:
+            understanding users, making the call on what matters, and shipping it.
+          </p>
+        </Bio>
+      </Intro>
+
+      <Reveal>
+        <Block>
+          <BlockTitle>Skills</BlockTitle>
+          <div>
+            {skillGroups.map(({ label, value }) => (
+              <DefRow key={label}>
+                <DefLabel>{label}</DefLabel>
+                <DefValue>{value}</DefValue>
+              </DefRow>
+            ))}
+          </div>
+        </Block>
+      </Reveal>
+
+      <Reveal>
+        <Block>
+          <BlockTitle>Education</BlockTitle>
+          <div>
+            <DefLabel>2019 to 2024</DefLabel>
+            <SchoolName>EPITA, School of Engineering and Computer Science, Paris</SchoolName>
+            <DefValue>
+              Master of Computer Science Engineering, specialized in Cybersecurity, Systems,
+              and Software Engineering.
+            </DefValue>
+          </div>
+        </Block>
+      </Reveal>
+
+      <Reveal>
+        <Block>
+          <BlockTitle>Core strengths</BlockTitle>
+          <StrengthGrid>
+            {strengths.map((strength) => (
+              <Strength key={strength}>{strength}</Strength>
+            ))}
+          </StrengthGrid>
+        </Block>
+      </Reveal>
+
+      <Reveal>
+        <Block>
+          <BlockTitle>Languages</BlockTitle>
+          <LanguageGrid>
+            {languages.map(({ name, level }) => (
+              <Language key={name}>
+                <strong>{name}</strong>
+                <span>{level}</span>
+              </Language>
+            ))}
+          </LanguageGrid>
+        </Block>
+      </Reveal>
+    </Container>
+  </Section>
+);
 
 export default About;

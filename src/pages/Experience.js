@@ -1,177 +1,177 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import Reveal from '../components/Reveal';
+import { Section, Container, Eyebrow, PageTitle, Lede } from '../components/primitives';
 
-// Styled Components
-const PageContainer = styled.div`
-  padding: 4rem 2rem;
-  text-align: center;
-  background: linear-gradient(135deg, #eef2f3, #ffffff);
-  min-height: 100vh;
-
-  @media (max-width: 768px) {
-    padding: 3rem 1rem;
-  }
+const Header = styled.div`
+  max-width: ${({ theme }) => theme.layout.textWidth};
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
 `;
 
-const Title = styled.h1`
-  font-size: 3rem;
-  color: #3a86ff;
-  font-family: 'Poppins', sans-serif;
-  margin-bottom: 2rem;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
+const List = styled.div`
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const ExperienceList = styled.div`
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: left;
-`;
-
-const ExperienceItem = styled(motion.div)`
-  margin-bottom: 2rem;
-  padding: 2rem;
-  border-radius: 15px;
-  background: #ffffff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-  }
+const Entry = styled.article`
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.lg} 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
   @media (max-width: 768px) {
-    padding: 1.5rem;
-  }
-`;
-
-const Position = styled.h2`
-  font-size: 1.8rem;
-  color: #3a86ff;
-  font-family: 'Poppins', sans-serif;
-  margin-bottom: 0.5rem;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-`;
-
-const Company = styled.h3`
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 0.5rem;
-  font-family: 'Roboto', sans-serif;
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing.xs};
+    padding: ${({ theme }) => theme.spacing.md} 0;
   }
 `;
 
 const Duration = styled.p`
-  font-size: 1rem;
-  color: #888;
-  margin-bottom: 1rem;
-  font-family: 'Roboto', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textMuted};
+  padding-top: 0.35rem;
+`;
 
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
+const Body = styled.div``;
+
+const Position = styled.h2`
+  font-size: clamp(1.25rem, 2.4vw, 1.45rem);
+  margin-bottom: 0.3rem;
+`;
+
+const Company = styled.p`
+  font-size: 0.95rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+
+  a {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderStrong};
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  a:hover {
+    color: ${({ theme }) => theme.colors.accent};
+    border-color: ${({ theme }) => theme.colors.accent};
   }
 `;
 
-const Description = styled.div`
-  font-size: 1rem;
-  color: #666;
-  font-family: 'Roboto', sans-serif;
-  line-height: 1.6;
-  overflow: hidden;
-  max-height: ${(props) => (props.expanded ? '500px' : '0')};
-  transition: max-height 0.3s ease, padding 0.3s ease;
-  padding-top: ${(props) => (props.expanded ? '1rem' : '0')};
+const Points = styled.ul`
+  list-style: none;
 
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
+  li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: ${({ theme }) => theme.colors.textSecondary};
+    margin-bottom: 0.4rem;
+  }
+
+  li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 5px;
+    height: 1px;
+    background: ${({ theme }) => theme.colors.borderStrong};
   }
 `;
 
-const ToggleButton = styled.button`
-  background: transparent;
-  color: #3a86ff;
-  border: none;
-  font-size: 1rem;
-  font-family: 'Roboto', sans-serif;
-  margin-top: 1rem;
-  cursor: pointer;
+const experienceData = [
+  {
+    position: 'Founder & Product Lead',
+    company: "Fran's Guide",
+    location: 'Paris, France',
+    companyLink: 'https://fransguide.com',
+    duration: '2025 to Present',
+    points: [
+      'Designed and launched an iOS application delivering 24/7 AI-powered travel guidance, owning the full product lifecycle from customer discovery and feature prioritization through technical architecture, App Store distribution, and user analytics.',
+      'Validated product-market fit through direct customer interviews and B2B partnership exploration, instrumenting acquisition, engagement, and monetization metrics.',
+      'Integrated an AI assistant into the product experience, balancing technical capability against user needs and business viability.',
+      'Extended the product with private guided tours and photography sessions, handling brand, web presence, and payment processing via Stripe.',
+    ],
+  },
+  {
+    position: 'Cybersecurity Governance & Customer Success',
+    company: 'La Banque Postale',
+    location: 'Paris, France',
+    duration: '2024 to 2025',
+    points: [
+      'Accelerated adoption of internal security tooling by understanding user needs and translating technical requirements into business language, increasing adoption by 40%.',
+      'Coordinated alignment between IT and business teams on security governance, facilitating cross-functional communication around shared objectives.',
+      'Contributed to executive-level reporting, ensuring security insights were clear, actionable, and able to inform board-level decisions.',
+    ],
+  },
+  {
+    position: 'Application Development Analyst',
+    company: 'Accenture',
+    location: 'Paris, France',
+    duration: '2022 to 2024',
+    points: [
+      'Partnered with Fortune 500 clients on digital transformation initiatives, translating customer pain points into technical solutions.',
+      'Bridged engineering and business stakeholders by communicating technical concepts to non-technical audiences and aligning on realistic priorities.',
+      'Identified technical capability gaps within delivery teams and co-designed solutions matching business needs.',
+      'Supported change management and team coordination, helping cross-functional groups work together through transformation programmes.',
+    ],
+  },
+  {
+    position: 'Business Analyst, Purchasing & Sales',
+    company: 'Faurecia',
+    location: 'Nanterre, France',
+    duration: 'June to Dec. 2021',
+    points: [
+      'Improved CRM and SRM workflows alongside procurement and sales teams, increasing visibility and decision-making accuracy across supplier and client networks.',
+      'Used KPI reporting and data analysis to inform strategic business decisions and surface improvement opportunities.',
+      'Supported data migration and user training to ensure smooth system transitions and stakeholder adoption.',
+    ],
+  },
+];
 
-  &:hover {
-    text-decoration: underline;
-  }
+const Experience = () => (
+  <Section>
+    <Container>
+      <Header>
+        <Eyebrow>Career</Eyebrow>
+        <PageTitle>Experience</PageTitle>
+        <Lede>
+          Five years across enterprise consulting, cybersecurity governance, and building
+          and shipping my own product.
+        </Lede>
+      </Header>
 
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-  }
-`;
-
-const Experience = () => {
-  const [expandedItem, setExpandedItem] = useState(null);
-
-  const toggleDetails = (index) => {
-    setExpandedItem(expandedItem === index ? null : index);
-  };
-
-  const experienceData = [
-    {
-      position: 'Cybersecurity Governance Specialist',
-      company: 'La Banque Postale Paris, France',
-      duration: 'September 2024 - Present',
-      description:
-        'Contribute to the operational readiness (MCO) of the Cybersecurity governance framework. Responsible for drafting, implementing, and monitoring cybersecurity policies across the organization.',
-    },
-    {
-      position: 'Application Development - Apprenticeship',
-      company: 'Accenture Paris, France',
-      duration: 'October 2022 - August 2024',
-      description:
-        'Developing and maintaining applications while working on innovative software solutions. Collaborating with a cross-functional team to deliver high-quality projects. Participated in designing and optimizing back-end systems.',
-    },
-    {
-      position: 'Business Analyst (Purchasing & Sales) - Internship',
-      company: 'Faurecia Headquarter - Nanterre, France',
-      duration: 'June 2021 - December 2021',
-      description:
-        'Analyzed sales data using SAP ARIBA and contributed to purchasing strategies using SAP C4C. Gained hands-on experience in business processes and data analytics. Worked closely with the sales and procurement teams to streamline workflows.',
-    },
-  ];
-
-  return (
-    <PageContainer>
-      <Title>Professional Experience</Title>
-      <ExperienceList>
+      <List>
         {experienceData.map((item, index) => (
-          <ExperienceItem
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.2 }}
-          >
-            <Position>{item.position}</Position>
-            <Company>{item.company}</Company>
-            <Duration>{item.duration}</Duration>
-            <Description expanded={expandedItem === index}>
-              {item.description}
-            </Description>
-            <ToggleButton onClick={() => toggleDetails(index)}>
-              {expandedItem === index ? 'Show Less' : 'Show More'}
-            </ToggleButton>
-          </ExperienceItem>
+          <Reveal key={item.company} delay={index * 70}>
+            <Entry>
+              <Duration>{item.duration}</Duration>
+              <Body>
+                <Position>{item.position}</Position>
+                <Company>
+                  {item.companyLink ? (
+                    <a href={item.companyLink} target="_blank" rel="noopener noreferrer">
+                      {item.company}
+                    </a>
+                  ) : (
+                    item.company
+                  )}
+                  {', '}
+                  {item.location}
+                </Company>
+                <Points>
+                  {item.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </Points>
+              </Body>
+            </Entry>
+          </Reveal>
         ))}
-      </ExperienceList>
-    </PageContainer>
-  );
-};
+      </List>
+    </Container>
+  </Section>
+);
 
 export default Experience;

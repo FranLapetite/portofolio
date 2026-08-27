@@ -2,7 +2,7 @@
   "name": "my-portfolio",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://www.francoiselapetite.com",
+  "homepage": "https://francoiselapetite.com",
   "dependencies": {
     "cra-template": "1.2.0",
     "emailjs-com": "^3.2.0",
@@ -17,9 +17,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "cp build/index.html build/404.html",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "echo 'www.francoiselapetite.com' > public/CNAME && npm run build",
+    "predeploy": "echo 'francoiselapetite.com' > public/CNAME && npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
@@ -42,6 +43,9 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "gh-pages": "^5.0.0"
+    "eslint": "^8.57.1",
+    "eslint-webpack-plugin": "^4.2.0",
+    "gh-pages": "^5.0.0",
+    "sass-loader": "^16.0.4"
   }
 }
