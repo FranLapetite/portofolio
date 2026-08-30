@@ -29,7 +29,7 @@ const en = {
     eyebrow: 'Paris, France',
     role: 'Product Manager & Engineer',
     bio:
-      'I build products end to end, from customer discovery and prototyping through architecture, launch, and the analytics that tell you whether any of it worked. Trained as a computer science engineer, I spent four years bridging engineering and business at Accenture and La Banque Postale before founding Fran’s Guide and shipping my own iOS product to the App Store.',
+      'I build products end to end, from customer discovery and prototyping through architecture, launch, and the analytics that tell you whether any of it worked. Trained as a computer science engineer, I bridged engineering and business at Accenture and La Banque Postale before founding Fran’s Guide and shipping my own iOS product to the App Store.',
     downloadCv: 'Download CV',
     viewWork: 'View work',
     facts: [
@@ -148,7 +148,7 @@ const en = {
     eyebrow: 'Career',
     title: 'Experience',
     lede:
-      'Five years across enterprise consulting, cybersecurity governance, and building and shipping my own product.',
+      'From enterprise consulting to cybersecurity governance, and building and shipping my own product.',
     entries: [
       {
         position: 'Founder & Product Lead',

@@ -29,7 +29,7 @@ const fr = {
     eyebrow: 'Paris, France',
     role: 'Product Manager & Ingénieure',
     bio:
-      "Je conçois des produits de bout en bout : de la découverte client et du prototypage jusqu'à l'architecture, au lancement et aux analytics qui disent si tout cela a vraiment fonctionné. Ingénieure en informatique de formation, j'ai passé quatre ans à faire le lien entre la technique et le métier chez Accenture et à La Banque Postale, avant de fonder Fran's Guide et de publier ma propre application iOS sur l'App Store.",
+      "Je conçois des produits de bout en bout : de la découverte client et du prototypage jusqu'à l'architecture, au lancement et aux analytics qui disent si tout cela a vraiment fonctionné. Ingénieure en informatique de formation, j'ai fait le lien entre la technique et le métier chez Accenture et à La Banque Postale, avant de fonder Fran's Guide et de publier ma propre application iOS sur l'App Store.",
     downloadCv: 'Télécharger le CV',
     viewWork: 'Voir mes projets',
     facts: [
@@ -150,7 +150,7 @@ const fr = {
     eyebrow: 'Parcours',
     title: 'Expérience',
     lede:
-      "Cinq ans entre le conseil en entreprise, la gouvernance cybersécurité, et la conception et le lancement de mon propre produit.",
+      "Du conseil en entreprise à la gouvernance cybersécurité, et la conception et le lancement de mon propre produit.",
     entries: [
       {
         position: 'Fondatrice & Product Lead',
