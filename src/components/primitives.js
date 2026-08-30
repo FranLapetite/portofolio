@@ -72,7 +72,7 @@ export const TextLink = styled.a`
 export const Button = styled.a`
   display: inline-block;
   background: ${({ theme }) => theme.colors.accent};
-  color: ${({ theme }) => theme.colors.bgBase};
+  color: ${({ theme }) => theme.colors.onAccent};
   padding: 0.85rem 1.9rem;
   border: 1px solid ${({ theme }) => theme.colors.accent};
   border-radius: ${({ theme }) => theme.radii.pill};
@@ -103,6 +103,47 @@ export const Button = styled.a`
       transform: none;
     }
   }
+`;
+
+/**
+ * Round 32px control used by the header switches, so the theme toggle and the
+ * burger keep exactly the same footprint next to the language pill.
+ */
+export const IconButton = styled.button`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.pill};
+  background: ${({ theme }) => theme.colors.bgSurface};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.accent};
+    border-color: ${({ theme }) => theme.colors.borderStrong};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.accent};
+    outline-offset: 2px;
+  }
+`;
+
+/** Icon layer for IconButton: absolutely stacked so two icons can cross-fade. */
+export const IconLayer = styled.span`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
 `;
 
 /** Same footprint as Button, outlined instead of filled. */

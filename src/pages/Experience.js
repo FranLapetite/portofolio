@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Reveal from '../components/Reveal';
 import { Section, Container, Eyebrow, PageTitle, Lede } from '../components/primitives';
+import { useLanguage } from '../i18n';
 
 const Header = styled.div`
   max-width: ${({ theme }) => theme.layout.textWidth};
@@ -80,98 +81,63 @@ const Points = styled.ul`
   }
 `;
 
-const experienceData = [
-  {
-    position: 'Founder & Product Lead',
-    company: "Fran's Guide",
-    location: 'Paris, France',
-    companyLink: 'https://fransguide.com',
-    duration: '2025 to Present',
-    points: [
-      'Designed and launched an iOS application delivering 24/7 AI-powered travel guidance, owning the full product lifecycle from customer discovery and feature prioritization through technical architecture, App Store distribution, and user analytics.',
-      'Validated product-market fit through direct customer interviews and B2B partnership exploration, instrumenting acquisition, engagement, and monetization metrics.',
-      'Integrated an AI assistant into the product experience, balancing technical capability against user needs and business viability.',
-      'Extended the product with private guided tours and photography sessions, handling brand, web presence, and payment processing via Stripe.',
-    ],
-  },
-  {
-    position: 'Cybersecurity Governance & Customer Success',
-    company: 'La Banque Postale',
-    location: 'Paris, France',
-    duration: '2024 to 2025',
-    points: [
-      'Accelerated adoption of internal security tooling by understanding user needs and translating technical requirements into business language, increasing adoption by 40%.',
-      'Coordinated alignment between IT and business teams on security governance, facilitating cross-functional communication around shared objectives.',
-      'Contributed to executive-level reporting, ensuring security insights were clear, actionable, and able to inform board-level decisions.',
-    ],
-  },
-  {
-    position: 'Application Development Analyst',
-    company: 'Accenture',
-    location: 'Paris, France',
-    duration: '2022 to 2024',
-    points: [
-      'Partnered with Fortune 500 clients on digital transformation initiatives, translating customer pain points into technical solutions.',
-      'Bridged engineering and business stakeholders by communicating technical concepts to non-technical audiences and aligning on realistic priorities.',
-      'Identified technical capability gaps within delivery teams and co-designed solutions matching business needs.',
-      'Supported change management and team coordination, helping cross-functional groups work together through transformation programmes.',
-    ],
-  },
-  {
-    position: 'Business Analyst, Purchasing & Sales',
-    company: 'Faurecia',
-    location: 'Nanterre, France',
-    duration: 'June to Dec. 2021',
-    points: [
-      'Improved CRM and SRM workflows alongside procurement and sales teams, increasing visibility and decision-making accuracy across supplier and client networks.',
-      'Used KPI reporting and data analysis to inform strategic business decisions and surface improvement opportunities.',
-      'Supported data migration and user training to ensure smooth system transitions and stakeholder adoption.',
-    ],
-  },
+/* Employer names and their links are the same in every language, so they stay
+   out of the dictionaries and are matched to the translated entries by position. */
+const employers = [
+  { company: "Fran's Guide", companyLink: 'https://fransguide.com' },
+  { company: 'La Banque Postale' },
+  { company: 'Accenture' },
+  { company: 'Faurecia' },
 ];
 
-const Experience = () => (
-  <Section>
-    <Container>
-      <Header>
-        <Eyebrow>Career</Eyebrow>
-        <PageTitle>Experience</PageTitle>
-        <Lede>
-          Five years across enterprise consulting, cybersecurity governance, and building
-          and shipping my own product.
-        </Lede>
-      </Header>
+const Experience = () => {
+  const { t } = useLanguage();
+  const copy = t.experience;
 
-      <List>
-        {experienceData.map((item, index) => (
-          <Reveal key={item.company} delay={index * 70}>
-            <Entry>
-              <Duration>{item.duration}</Duration>
-              <Body>
-                <Position>{item.position}</Position>
-                <Company>
-                  {item.companyLink ? (
-                    <a href={item.companyLink} target="_blank" rel="noopener noreferrer">
-                      {item.company}
-                    </a>
-                  ) : (
-                    item.company
-                  )}
-                  {', '}
-                  {item.location}
-                </Company>
-                <Points>
-                  {item.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </Points>
-              </Body>
-            </Entry>
-          </Reveal>
-        ))}
-      </List>
-    </Container>
-  </Section>
-);
+  return (
+    <Section>
+      <Container>
+        <Header>
+          <Eyebrow>{copy.eyebrow}</Eyebrow>
+          <PageTitle>{copy.title}</PageTitle>
+          <Lede>{copy.lede}</Lede>
+        </Header>
+
+        <List>
+          {copy.entries.map((item, index) => {
+            const { company, companyLink } = employers[index];
+
+            return (
+              <Reveal key={company} delay={index * 70}>
+                <Entry>
+                  <Duration>{item.duration}</Duration>
+                  <Body>
+                    <Position>{item.position}</Position>
+                    <Company>
+                      {companyLink ? (
+                        <a href={companyLink} target="_blank" rel="noopener noreferrer">
+                          {company}
+                        </a>
+                      ) : (
+                        company
+                      )}
+                      {', '}
+                      {item.location}
+                    </Company>
+                    <Points>
+                      {item.points.map((point) => (
+                        <li key={point}>{point}</li>
+                      ))}
+                    </Points>
+                  </Body>
+                </Entry>
+              </Reveal>
+            );
+          })}
+        </List>
+      </Container>
+    </Section>
+  );
+};
 
 export default Experience;

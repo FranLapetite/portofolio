@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Section, Container, Eyebrow, PageTitle, Lede } from '../components/primitives';
+import { useLanguage } from '../i18n';
 
 const Layout = styled.div`
   display: grid;
@@ -129,7 +130,7 @@ const Checkbox = styled.input`
 const SubmitButton = styled.button`
   align-self: flex-start;
   background: ${({ theme }) => theme.colors.accent};
-  color: ${({ theme }) => theme.colors.bgBase};
+  color: ${({ theme }) => theme.colors.onAccent};
   padding: 0.85rem 1.9rem;
   border: 1px solid ${({ theme }) => theme.colors.accent};
   border-radius: ${({ theme }) => theme.radii.pill};
@@ -171,9 +172,14 @@ const StatusMessage = styled(motion.p)`
 `;
 
 const Contact = () => {
+  const { t } = useLanguage();
+  const copy = t.contact;
+
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [privacyChecked, setPrivacyChecked] = useState(false);
-  const [status, setStatus] = useState('');
+  /* Stored as a key, not a sentence, so an in-flight status re-renders in the
+     newly selected language when the toggle is used. */
+  const [status, setStatus] = useState(null);
   const [sending, setSending] = useState(false);
 
   const handleChange = (e) => {
@@ -184,12 +190,12 @@ const Contact = () => {
     e.preventDefault();
 
     if (!privacyChecked) {
-      setStatus('Please agree to the Privacy Policy before submitting.');
+      setStatus('needConsent');
       return;
     }
 
     setSending(true);
-    setStatus('Sending…');
+    setStatus('sending');
 
     emailjs
       .send(
@@ -204,13 +210,13 @@ const Contact = () => {
       )
       .then(
         () => {
-          setStatus('Message sent. I will get back to you shortly.');
+          setStatus('sent');
           setFormData({ name: '', email: '', message: '' });
           setPrivacyChecked(false);
           setSending(false);
         },
         () => {
-          setStatus('Failed to send message. Please try again.');
+          setStatus('error');
           setSending(false);
         }
       );
@@ -221,14 +227,11 @@ const Contact = () => {
       <Container>
         <Layout>
           <Intro>
-            <Eyebrow>Get in touch</Eyebrow>
-            <PageTitle>Contact</PageTitle>
-            <Lede>
-              Open to engineering roles, collaborations, and conversations about product or
-              security work.
-            </Lede>
+            <Eyebrow>{copy.eyebrow}</Eyebrow>
+            <PageTitle>{copy.title}</PageTitle>
+            <Lede>{copy.lede}</Lede>
             <Direct>
-              Prefer email?
+              {copy.preferEmail}
               <br />
               <a href="mailto:fran.lapetite@gmail.com">fran.lapetite@gmail.com</a>
             </Direct>
@@ -236,7 +239,7 @@ const Contact = () => {
 
           <Form onSubmit={handleSubmit}>
             <Field>
-              <FieldLabel>Name</FieldLabel>
+              <FieldLabel>{copy.nameLabel}</FieldLabel>
               <Input
                 type="text"
                 name="name"
@@ -247,7 +250,7 @@ const Contact = () => {
             </Field>
 
             <Field>
-              <FieldLabel>Email</FieldLabel>
+              <FieldLabel>{copy.emailLabel}</FieldLabel>
               <Input
                 type="email"
                 name="email"
@@ -258,7 +261,7 @@ const Contact = () => {
             </Field>
 
             <Field>
-              <FieldLabel>Message</FieldLabel>
+              <FieldLabel>{copy.messageLabel}</FieldLabel>
               <TextArea
                 name="message"
                 rows="5"
@@ -276,21 +279,23 @@ const Contact = () => {
                 required
               />
               <span>
-                I agree to the <Link to="/privacy-policy">Privacy Policy</Link>.
+                {copy.consentBefore}
+                <Link to="/privacy-policy">{copy.consentLink}</Link>
+                {copy.consentAfter}
               </span>
             </Consent>
 
             <SubmitButton type="submit" disabled={!privacyChecked || sending}>
-              {sending ? 'Sending…' : 'Send message'}
+              {sending ? copy.submitting : copy.submit}
             </SubmitButton>
 
             {status && (
               <StatusMessage
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                $success={status.startsWith('Message sent')}
+                $success={status === 'sent'}
               >
-                {status}
+                {copy.status[status]}
               </StatusMessage>
             )}
           </Form>

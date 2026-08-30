@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import FoxMascot from '../components/FoxMascot';
 import { Section, Container, Eyebrow, GhostButton } from '../components/primitives';
+import { useLanguage } from '../i18n';
 
 const Centered = styled(Container)`
   display: flex;
@@ -23,20 +24,23 @@ const Message = styled.p`
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `;
 
-const NotFound = () => (
-  <Section>
-    <Centered>
-      <Eyebrow>Error 404</Eyebrow>
-      <FoxMascot mood="judging" size={170} />
-      <Title>This page wandered off</Title>
-      <Message>
-        The address you followed doesn't lead anywhere. Let's get you back on track.
-      </Message>
-      <GhostButton as={Link} to="/">
-        Back to home
-      </GhostButton>
-    </Centered>
-  </Section>
-);
+const NotFound = () => {
+  const { t } = useLanguage();
+  const copy = t.notFound;
+
+  return (
+    <Section>
+      <Centered>
+        <Eyebrow>{copy.eyebrow}</Eyebrow>
+        <FoxMascot mood="judging" size={170} />
+        <Title>{copy.title}</Title>
+        <Message>{copy.message}</Message>
+        <GhostButton as={Link} to="/">
+          {copy.back}
+        </GhostButton>
+      </Centered>
+    </Section>
+  );
+};
 
 export default NotFound;

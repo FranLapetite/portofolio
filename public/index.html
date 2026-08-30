@@ -10,6 +10,27 @@
     <!-- Base URL -->
     <base href="/" />
 
+    <!-- Paint the saved (or system) colour scheme before React mounts, so a
+         dark-mode visitor never gets a flash of the cream background. Values
+         must match bgBase in src/theme.js. -->
+    <script>
+      (function () {
+        try {
+          var stored = window.localStorage.getItem('fl-theme');
+          var dark =
+            stored === 'dark' ||
+            (stored !== 'light' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var root = document.documentElement;
+          root.dataset.theme = dark ? 'dark' : 'light';
+          root.style.colorScheme = dark ? 'dark' : 'light';
+          root.style.backgroundColor = dark ? '#14120F' : '#FAF8F5';
+        } catch (e) {
+          /* Blocked storage: React picks the mode up on mount instead. */
+        }
+      })();
+    </script>
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="%PUBLIC_URL%/FL_logo.png" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/FL_logo.png" />

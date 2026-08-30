@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from 'styled-components';
 import './index.css';
 import App from './App';
-import theme from './theme';
+import { ThemeModeProvider } from './ThemeMode';
 import reportWebVitals from './reportWebVitals';
 
 if ('scrollRestoration' in window.history) {
@@ -13,9 +12,9 @@ if ('scrollRestoration' in window.history) {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <ThemeModeProvider>
       <App />
-    </ThemeProvider>
+    </ThemeModeProvider>
   </React.StrictMode>
 );
 

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Section, Container, Eyebrow, Button, GhostButton } from '../components/primitives';
+import { useLanguage } from '../i18n';
 
 const HomeSection = styled(Section)`
   padding-top: ${({ theme }) => theme.spacing.xxl};
@@ -155,30 +156,29 @@ const curtain = {
   show: { y: '0%', transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
-const facts = [
-  { label: 'Currently', value: "Founder, Fran's Guide" },
-  { label: 'Previously', value: 'La Banque Postale, Accenture' },
-  { label: 'Languages', value: 'FR · PT · EN · ES' },
-  {
-    label: 'Elsewhere',
-    value: (
-      <>
-        <a href="https://www.linkedin.com/in/fran-lapetite" target="_blank" rel="noopener noreferrer">
-          LinkedIn
-        </a>
-        {' · '}
-        <a href="https://github.com/FranLapetite" target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
-      </>
-    ),
-  },
-];
+/** The profile links never change with the language, only their row label does. */
+const elsewhereValue = (
+  <>
+    <a href="https://www.linkedin.com/in/fran-lapetite" target="_blank" rel="noopener noreferrer">
+      LinkedIn
+    </a>
+    {' · '}
+    <a href="https://github.com/FranLapetite" target="_blank" rel="noopener noreferrer">
+      GitHub
+    </a>
+  </>
+);
 
 const Home = () => {
+  const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+
+  const facts = useMemo(
+    () => [...t.home.facts, { label: t.home.elsewhereLabel, value: elsewhereValue }],
+    [t]
+  );
 
   useEffect(() => {
     if (reduceMotion || paused) return undefined;
@@ -186,33 +186,27 @@ const Home = () => {
       setActive((current) => (current + 1) % facts.length);
     }, 2800);
     return () => clearInterval(id);
-  }, [reduceMotion, paused]);
+  }, [reduceMotion, paused, facts.length]);
 
   return (
     <HomeSection>
       <Container>
         <Hero variants={container} initial="hidden" animate="show">
           <Statement>
-            <Eyebrow as={motion.p} variants={item}>Paris, France</Eyebrow>
+            <Eyebrow as={motion.p} variants={item}>{t.home.eyebrow}</Eyebrow>
             <Name>
               <NameInner variants={reduceMotion ? item : curtain}>
                 Françoise Lapetite
               </NameInner>
             </Name>
-            <Role variants={item}>Product Manager &amp; Engineer</Role>
-            <Bio variants={item}>
-              I build products end to end, from customer discovery and prototyping through
-              architecture, launch, and the analytics that tell you whether any of it
-              worked. Trained as a computer science engineer, I spent four years bridging
-              engineering and business at Accenture and La Banque Postale before founding
-              Fran's Guide and shipping my own iOS product to the App Store.
-            </Bio>
+            <Role variants={item}>{t.home.role}</Role>
+            <Bio variants={item}>{t.home.bio}</Bio>
             <Actions variants={item}>
               <Button href="/Francoise_Lapetite_CV_2026.pdf" download>
-                Download CV
+                {t.home.downloadCv}
               </Button>
               <GhostButton as={Link} to="/projects">
-                View work
+                {t.home.viewWork}
               </GhostButton>
             </Actions>
           </Statement>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import FoxMascot from '../components/FoxMascot';
 import { Section, Container, Eyebrow, PageTitle, Lede, GhostButton } from '../components/primitives';
+import { useLanguage } from '../i18n';
 
 const Centered = styled(Container)`
   display: flex;
@@ -57,9 +58,11 @@ const Actions = styled.div`
   justify-content: center;
 `;
 
-const items = ['Browse the projects', 'Read about Fox', 'Get in touch'];
-
 const FoxDen = () => {
+  const { t } = useLanguage();
+  const copy = t.fox;
+  const items = copy.items;
+
   const [checked, setChecked] = useState([false, false, false]);
   const doneCount = checked.filter(Boolean).length;
   const mood = doneCount === items.length ? 'proud' : doneCount === 0 ? 'focused' : 'reading';
@@ -71,13 +74,10 @@ const FoxDen = () => {
   return (
     <Section>
       <Centered>
-        <Eyebrow>A small detour</Eyebrow>
+        <Eyebrow>{copy.eyebrow}</Eyebrow>
         <FoxMascot mood={mood} size={180} />
-        <PageTitle>Fox Den</PageTitle>
-        <Lede>
-          Fox is the companion from my to-do widget app. Its expression follows your
-          progress. Tick the list below and watch.
-        </Lede>
+        <PageTitle>{copy.title}</PageTitle>
+        <Lede>{copy.lede}</Lede>
 
         <Checklist>
           {items.map((item, index) => (
@@ -92,14 +92,10 @@ const FoxDen = () => {
           ))}
         </Checklist>
 
-        <Story>
-          I built Fox because a to-do list that stays silent whether or not you follow
-          through never helped me much. This one reacts, which turns out to be a surprisingly
-          effective nudge.
-        </Story>
+        <Story>{copy.story}</Story>
 
         <Actions>
-          <GhostButton as={Link} to="/projects">See Fox in Projects</GhostButton>
+          <GhostButton as={Link} to="/projects">{copy.seeInProjects}</GhostButton>
           <GhostButton
             as="a"
             href="https://github.com/FranLapetite"

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { AnimatePresence } from "framer-motion";
 import styled from "styled-components";
 import GlobalStyle from "./GlobalStyle";
+import { LanguageProvider } from "./i18n";
 import Navbar from "./components/Navbar";
 import PageTransition from "./components/PageTransition";
 import ScrollToTop from "./components/ScrollToTop";
@@ -49,17 +50,19 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <Router>
-      <GlobalStyle />
-      <ScrollToTop />
-      <Shell>
-        <Navbar />
-        <Main>
-          <AnimatedRoutes />
-        </Main>
-        <Footer />
-      </Shell>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <GlobalStyle />
+        <ScrollToTop />
+        <Shell>
+          <Navbar />
+          <Main>
+            <AnimatedRoutes />
+          </Main>
+          <Footer />
+        </Shell>
+      </Router>
+    </LanguageProvider>
   );
 }
 

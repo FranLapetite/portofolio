@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Section, Container, Eyebrow, PageTitle } from '../components/primitives';
+import { Rich, useLanguage } from '../i18n';
 
 const Wrapper = styled.div`
   max-width: ${({ theme }) => theme.layout.textWidth};
@@ -72,66 +73,68 @@ const EffectiveDate = styled.p`
   margin-bottom: ${({ theme }) => theme.spacing.md};
 `;
 
-const PrivacyPolicy = () => (
-  <Section>
-    <Container>
-      <Wrapper>
-        <Eyebrow>Legal</Eyebrow>
-        <PageTitle>Privacy Policy</PageTitle>
-        <EffectiveDate>Effective 1 February 2025</EffectiveDate>
+const PrivacyPolicy = () => {
+  const { t } = useLanguage();
+  const copy = t.privacy;
 
-        <Paragraph>
-          Welcome to <strong>francoiselapetite.com</strong>. Your privacy is important to me.
-          This policy explains how personal data is collected, used, and protected, in
-          compliance with the General Data Protection Regulation (GDPR).
-        </Paragraph>
+  return (
+    <Section>
+      <Container>
+        <Wrapper>
+          <Eyebrow>{copy.eyebrow}</Eyebrow>
+          <PageTitle>{copy.title}</PageTitle>
+          <EffectiveDate>{copy.effective}</EffectiveDate>
 
-        <Heading>1. Data collected</Heading>
-        <List>
-          <li>Information you provide via the contact form (name, email, message)</li>
-          <li>Analytics data such as cookies, IP addresses, and browsing behaviour</li>
-        </List>
+          <Paragraph>
+            <Rich text={copy.intro} />
+          </Paragraph>
 
-        <Heading>2. How your data is used</Heading>
-        <List>
-          <li>To respond to your messages and enquiries</li>
-          <li>To improve website functionality and user experience</li>
-          <li>To analyse traffic and optimise website performance, where analytics is used</li>
-        </List>
+          <Heading>{copy.collectedTitle}</Heading>
+          <List>
+            {copy.collected.map((line) => (
+              <li key={line}>
+                <Rich text={line} />
+              </li>
+            ))}
+          </List>
 
-        <Heading>3. Data retention</Heading>
-        <Paragraph>
-          Personal data is retained only as long as necessary for the purposes described
-          above. Contact form data is stored for a maximum of <strong>6 months</strong>.
-          Analytics data may be retained for up to <strong>12 months</strong>.
-        </Paragraph>
+          <Heading>{copy.usageTitle}</Heading>
+          <List>
+            {copy.usage.map((line) => (
+              <li key={line}>
+                <Rich text={line} />
+              </li>
+            ))}
+          </List>
 
-        <Heading>4. Your rights under GDPR</Heading>
-        <List>
-          <li><strong>Access</strong> your personal data and request a copy</li>
-          <li><strong>Correct</strong> any inaccurate information</li>
-          <li><strong>Request deletion</strong> of your personal data</li>
-          <li><strong>Withdraw consent</strong> for data processing at any time</li>
-          <li><strong>Restrict or object</strong> to certain types of processing</li>
-        </List>
-        <Paragraph>
-          To exercise these rights, please use the contact details below.
-        </Paragraph>
+          <Heading>{copy.retentionTitle}</Heading>
+          <Paragraph>
+            <Rich text={copy.retention} />
+          </Paragraph>
 
-        <Heading>5. Cookies and tracking</Heading>
-        <Paragraph>
-          If cookies or tracking tools are used, you will be asked for consent on your first
-          visit. You can also manage cookie preferences through your browser settings.
-        </Paragraph>
+          <Heading>{copy.rightsTitle}</Heading>
+          <List>
+            {copy.rights.map((line) => (
+              <li key={line}>
+                <Rich text={line} />
+              </li>
+            ))}
+          </List>
+          <Paragraph>{copy.rightsNote}</Paragraph>
 
-        <Heading>6. Contact</Heading>
-        <Paragraph>
-          For any privacy-related question, write to{' '}
-          <a href="mailto:fran.lapetite@gmail.com">fran.lapetite@gmail.com</a>.
-        </Paragraph>
-      </Wrapper>
-    </Container>
-  </Section>
-);
+          <Heading>{copy.cookiesTitle}</Heading>
+          <Paragraph>{copy.cookies}</Paragraph>
+
+          <Heading>{copy.contactTitle}</Heading>
+          <Paragraph>
+            {copy.contactBefore}
+            <a href="mailto:fran.lapetite@gmail.com">fran.lapetite@gmail.com</a>
+            {copy.contactAfter}
+          </Paragraph>
+        </Wrapper>
+      </Container>
+    </Section>
+  );
+};
 
 export default PrivacyPolicy;
